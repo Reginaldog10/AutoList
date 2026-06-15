@@ -1351,3 +1351,111 @@ input, select, textarea, button {
     transform: scale(1);
   }
 }
+
+/* Banner de Instalação PWA (Glassmorphism e Elegante) */
+.install-banner {
+  position: fixed;
+  bottom: 24px;
+  left: 50%;
+  transform: translateX(-50%);
+  width: calc(100% - 32px);
+  max-width: 440px;
+  background: rgba(18, 21, 38, 0.94);
+  backdrop-filter: blur(24px);
+  -webkit-backdrop-filter: blur(24px);
+  border: 1px solid rgba(255, 255, 255, 0.08);
+  border-radius: var(--radius-lg);
+  padding: 16px;
+  display: flex;
+  align-items: center;
+  gap: 16px;
+  box-shadow: 0 16px 40px rgba(0, 0, 0, 0.6);
+  z-index: 1000;
+  animation: slideUpFade 0.4s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+}
+
+@keyframes slideUpFade {
+  from {
+    transform: translateX(-50%) translateY(40px);
+    opacity: 0;
+  }
+  to {
+    transform: translateX(-50%) translateY(0);
+    opacity: 1;
+  }
+}
+
+.banner-icon-area {
+  flex-shrink: 0;
+  width: 52px;
+  height: 52px;
+  background-color: var(--bg-primary);
+  border-radius: var(--radius-md);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border: 1px solid var(--border-color);
+  box-shadow: var(--shadow-sm);
+}
+
+.banner-logo {
+  width: 40px;
+  height: 40px;
+  object-fit: contain;
+}
+
+.banner-text-area {
+  flex: 1;
+}
+
+.banner-text-area h4 {
+  font-size: 15px;
+  font-weight: 700;
+  margin-bottom: 4px;
+  color: #FFFFFF;
+}
+
+.banner-text-area p {
+  font-size: 12px;
+  color: var(--text-secondary);
+  line-height: 1.4;
+}
+
+.banner-actions {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-end;
+  gap: 8px;
+  height: 100%;
+  justify-content: space-between;
+}
+
+.btn-banner-close {
+  background: none;
+  border: none;
+  color: var(--text-secondary);
+  cursor: pointer;
+  padding: 4px;
+  transition: var(--transition-fast);
+  border-radius: 50%;
+}
+
+.btn-banner-close:hover {
+  color: #FFFFFF;
+  background-color: rgba(255, 255, 255, 0.05);
+}
+
+.btn-banner-action {
+  height: 32px !important;
+  font-size: 12px !important;
+  padding: 0 14px !important;
+  border-radius: var(--radius-sm) !important;
+  font-weight: 700 !important;
+}
+
+/* Responsividade do Banner para não sobrepor Bottom Nav no Mobile */
+@media (max-width: 768px) {
+  .install-banner {
+    bottom: calc(108px + var(--safe-area-bottom)); /* Fica um pouco acima do bottom-nav estilo pílula */
+  }
+}

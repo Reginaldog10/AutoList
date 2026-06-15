@@ -77,6 +77,7 @@ const DOM = {
 document.addEventListener('DOMContentLoaded', () => {
   initEventListeners();
   checkCachedSession();
+  initPWAInstallation();
 });
 
 // Registrar o Service Worker para PWA
@@ -1074,5 +1075,78 @@ function showCustomPrompt(title, label, defaultValue = '') {
     
     btnCancel.addEventListener('click', onCancel);
     form.addEventListener('submit', onSubmit);
+  });
+}
+
+// Inicialização e controle de instalação do PWA (Android e iOS)
+let deferredPrompt;
+function initPWAInstallation() {
+  const banner = document.getElementById('pwa-install-banner');
+  const btnInstall = document.getElementById('btn-pwa-install');
+  const btnClose = document.getElementById('btn-pwa-close');
+  const descText = document.getElementById('pwa-install-desc');
+
+  if (!banner) return;
+
+  // Verificar se o app já está rodando em modo Standalone (instalado)
+  const isStandalone = window.matchMedia('(display-mode: standalone)').matches || window.navigator.standalone;
+  if (isStandalone) {
+    return; // Se já está instalado, não exibe nada
+  }
+
+  // Detectar se é iOS (iPhone/iPad)
+  const isIOS = /iPad|iPhone|iPod/.test(navigator.userAgent) && !window.MSStream;
+
+  // Detectar se o banner já foi rejeitado nesta sessão
+  const isDismissed = sessionStorage.getItem('pwa-banner-dismissed');
+  if (isDismissed) {
+    return;
+  }
+
+  // Se for iOS e não standalone, exibe o banner com instruções de compartilhamento
+  if (isIOS) {
+    descText.innerHTML = 'Toque no botão de compartilhar <span style="font-size:16px;">⎋</span> do Safari e selecione <strong>Adicionar à Tela de Início</strong>.';
+    btnInstall.textContent = 'Ok, entendi';
+    btnInstall.addEventListener('click', () => {
+      banner.classList.add('hidden');
+      sessionStorage.setItem('pwa-banner-dismissed', 'true');
+    });
+    
+    // Exibe após 3 segundos
+    setTimeout(() => {
+      banner.classList.remove('hidden');
+    }, 3000);
+  }
+
+  // Ouvinte para Android/Chrome (e navegadores que suportam beforeinstallprompt)
+  window.addEventListener('beforeinstallprompt', (e) => {
+    // Impedir que o Chrome exiba o mini-infobar padrão
+    e.preventDefault();
+    // Salva o evento para ser disparado posteriormente
+    deferredPrompt = e;
+    
+    // Exibir o banner após 3 segundos
+    setTimeout(() => {
+      banner.classList.remove('hidden');
+    }, 3000);
+  });
+
+  btnInstall.addEventListener('click', async () => {
+    if (!deferredPrompt) return;
+    // Exibir o prompt nativo de instalação
+    deferredPrompt.prompt();
+    // Aguardar a resposta do usuário
+    const { outcome } = await deferredPrompt.userChoice;
+    console.log(`User response to the install prompt: ${outcome}`);
+    // Limpar o prompt salvo
+    deferredPrompt = null;
+    // Ocultar o banner
+    banner.classList.add('hidden');
+  });
+
+  btnClose.addEventListener('click', () => {
+    banner.classList.add('hidden');
+    // Guardar na sessão que o usuário fechou o banner para não incomodar nesta navegação
+    sessionStorage.setItem('pwa-banner-dismissed', 'true');
   });
 }
