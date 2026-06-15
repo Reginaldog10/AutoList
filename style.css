@@ -151,8 +151,15 @@ input, select, textarea, button {
   gap: 8px;
 }
 
-.brand-logo svg {
+.brand-logo svg,
+.brand-logo-img {
   display: block;
+}
+
+.brand-logo-img {
+  width: 28px;
+  height: 28px;
+  object-fit: contain;
 }
 
 .brand-title {
@@ -277,6 +284,13 @@ input, select, textarea, button {
 .logo-icon {
   margin-bottom: 16px;
   filter: drop-shadow(0 0 12px rgba(255, 59, 48, 0.4));
+}
+
+.login-logo-img {
+  display: block;
+  width: 90px;
+  height: 90px;
+  object-fit: contain;
 }
 
 .logo-area h1 {

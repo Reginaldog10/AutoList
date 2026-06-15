@@ -1,10 +1,11 @@
-const CACHE_NAME = 'autolist-catalogo-v2';
+const CACHE_NAME = 'autolist-catalogo-v3';
 const ASSETS = [
   './',
   './index.html',
   './style.css',
   './app.js',
   './manifest.json',
+  './logo.png',
   './icon.png',
   './icon-192.png',
   './icon-512.png'
