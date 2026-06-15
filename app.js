@@ -344,9 +344,20 @@ async function loadData(isOfflineFallback = false) {
       localStorage.setItem('autolist_catalog_data', JSON.stringify(data));
     }
     
-    // Mapeamento de dados recebidos
-    state.suppliers = data.fornecedores || [];
-    state.categories = data.categorias || [];
+    // Mapeamento de dados recebidos (filtrando cabeçalhos e linhas vazias vindas da planilha)
+    state.suppliers = (data.fornecedores || []).filter(s => {
+      if (!s.nome) return false;
+      const nomeUpper = String(s.nome).trim().toUpperCase();
+      const telUpper = String(s.telefone).trim().toUpperCase();
+      return nomeUpper !== '' && nomeUpper !== 'NOME' && nomeUpper !== 'NOME_FORNECEDOR' && telUpper !== 'TELEFONE';
+    });
+    
+    state.categories = (data.categorias || []).filter(c => {
+      const nome = c.nome !== undefined ? c.nome : c.nome_categoria;
+      if (!nome) return false;
+      const nomeUpper = String(nome).trim().toUpperCase();
+      return nomeUpper !== '' && nomeUpper !== 'NOME' && nomeUpper !== 'NOME_CATEGORIA';
+    });
     
     // Atualizar visualizações
     renderCategoryCarousel();
