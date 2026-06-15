@@ -104,7 +104,7 @@ input, select, textarea, button {
   -webkit-overflow-scrolling: touch;
   padding: 80px 16px 90px 16px; /* Space for fixed header and bottom nav */
   padding-top: calc(80px + var(--safe-area-top));
-  padding-bottom: calc(90px + var(--safe-area-bottom));
+  padding-bottom: calc(116px + var(--safe-area-bottom));
 }
 
 /* Custom Scrollbar */
@@ -179,7 +179,7 @@ input, select, textarea, button {
 /* Glassmorphism Bottom Nav Flutuante (Estilo Pílula - Igual à Imagem) */
 .bottom-nav {
   position: absolute;
-  bottom: 16px;
+  bottom: calc(28px + var(--safe-area-bottom));
   left: 50%;
   transform: translateX(-50%);
   width: calc(100% - 32px);
