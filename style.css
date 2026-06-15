@@ -1485,3 +1485,35 @@ input, select, textarea, button {
     aspect-ratio: 16 / 4; /* Fica mais elegante e estreito em telas horizontais grandes */
   }
 }
+
+/* Melhorias de Usabilidade e Navegação do Carrossel de Categorias no Desktop */
+.category-carousel-wrapper {
+  cursor: grab;
+  user-select: none;
+}
+
+.category-carousel-wrapper.grabbing {
+  cursor: grabbing;
+}
+
+@media (min-width: 992px) {
+  .category-carousel-wrapper::-webkit-scrollbar {
+    display: block !important; /* Mostra no desktop */
+    height: 5px;
+  }
+  
+  .category-carousel-wrapper::-webkit-scrollbar-track {
+    background: rgba(255, 255, 255, 0.01);
+    border-radius: 10px;
+  }
+  
+  .category-carousel-wrapper::-webkit-scrollbar-thumb {
+    background: rgba(255, 255, 255, 0.04);
+    border-radius: 10px;
+    transition: var(--transition-fast);
+  }
+  
+  .category-carousel-wrapper:hover::-webkit-scrollbar-thumb {
+    background: rgba(255, 59, 48, 0.25); /* Vermelho sutil no hover */
+  }
+}

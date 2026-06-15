@@ -78,6 +78,7 @@ document.addEventListener('DOMContentLoaded', () => {
   initEventListeners();
   checkCachedSession();
   initPWAInstallation();
+  initCategoryCarouselNavigation();
 });
 
 // Registrar o Service Worker para PWA
@@ -1159,5 +1160,49 @@ function initPWAInstallation() {
     banner.classList.add('hidden');
     // Guardar na sessão que o usuário fechou o banner para não incomodar nesta navegação
     sessionStorage.setItem('pwa-banner-dismissed', 'true');
+  });
+}
+
+// Lógica de navegação aprimorada para o carrossel de categorias no Desktop
+function initCategoryCarouselNavigation() {
+  const slider = document.querySelector('.category-carousel-wrapper');
+  if (!slider) return;
+
+  let isDown = false;
+  let startX;
+  let scrollLeft;
+
+  // 1. Converter scroll vertical da roda do mouse em scroll horizontal
+  slider.addEventListener('wheel', (e) => {
+    if (e.deltaY !== 0) {
+      e.preventDefault();
+      slider.scrollLeft += e.deltaY * 1.2; // Velocidade suave
+    }
+  });
+
+  // 2. Navegação por arrasto com o mouse (Drag-to-Scroll)
+  slider.addEventListener('mousedown', (e) => {
+    isDown = true;
+    slider.classList.add('grabbing');
+    startX = e.pageX - slider.offsetLeft;
+    scrollLeft = slider.scrollLeft;
+  });
+
+  slider.addEventListener('mouseleave', () => {
+    isDown = false;
+    slider.classList.remove('grabbing');
+  });
+
+  slider.addEventListener('mouseup', () => {
+    isDown = false;
+    slider.classList.remove('grabbing');
+  });
+
+  slider.addEventListener('mousemove', (e) => {
+    if (!isDown) return;
+    e.preventDefault();
+    const x = e.pageX - slider.offsetLeft;
+    const walk = (x - startX) * 2.5; // Ajuste de sensibilidade de arrasto
+    slider.scrollLeft = scrollLeft - walk;
   });
 }
