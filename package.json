@@ -1,0 +1,12 @@
+{
+  "name": "autolist-catalogo",
+  "version": "1.0.0",
+  "description": "Catálogo Premium de Fornecedores Automotivos",
+  "scripts": {
+    "dev": "serve -l 3000"
+  },
+  "dependencies": {},
+  "devDependencies": {
+    "serve": "^14.2.6"
+  }
+}

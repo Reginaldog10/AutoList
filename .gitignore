@@ -1,0 +1,6 @@
+node_modules/
+get_data_response.json
+get_data_response_new.json
+.gemini/
+.DS_Store
+*.log
