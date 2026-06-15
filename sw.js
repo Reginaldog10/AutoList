@@ -1,4 +1,4 @@
-const CACHE_NAME = 'autolist-catalogo-v6';
+const CACHE_NAME = 'autolist-catalogo-v7';
 const ASSETS = [
   './',
   './index.html',

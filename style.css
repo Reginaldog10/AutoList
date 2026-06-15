@@ -491,7 +491,7 @@ input, select, textarea, button {
   scroll-behavior: smooth;
   -webkit-overflow-scrolling: touch;
   margin: 0 -16px; /* Expand out to edges of screen */
-  padding: 4px 16px;
+  padding: 12px 16px;
 }
 
 .category-carousel-wrapper::-webkit-scrollbar {
@@ -500,57 +500,78 @@ input, select, textarea, button {
 
 .category-carousel {
   display: flex;
-  gap: 8px;
+  gap: 16px; /* Espaço maior entre os círculos */
   width: max-content;
+  padding: 8px 4px;
 }
 
 .category-pill {
   display: flex;
+  flex-direction: column;
   align-items: center;
-  gap: 8px;
-  padding: 10px 18px;
-  background-color: var(--bg-surface);
-  border: 1px solid var(--border-color);
-  border-radius: var(--radius-md);
-  font-size: 13px;
-  font-weight: 700;
+  gap: 8px; /* Espaço entre a bolinha e o texto */
+  background: none !important;
+  border: none !important;
+  padding: 0 !important;
+  box-shadow: none !important;
   cursor: pointer;
   transition: var(--transition-smooth);
-  color: var(--text-secondary);
-  box-shadow: var(--shadow-sm);
-  white-space: nowrap;
+  width: 72px; /* Mantém largura uniforme */
+  text-align: center;
 }
 
 .category-icon {
-  font-size: 16px;
-  transition: transform 0.2s ease;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 56px; /* Tamanho da bolinha */
+  height: 56px;
+  border-radius: 50%; /* Bolinha perfeita */
+  background-color: var(--bg-surface);
+  border: 1px solid var(--border-color);
+  font-size: 20px; /* Tamanho do emoji interno */
+  transition: var(--transition-smooth);
+  box-shadow: var(--shadow-sm);
+  color: var(--text-secondary);
 }
 
 .category-name {
-  letter-spacing: 0.3px;
+  font-size: 11px;
+  font-weight: 600;
+  color: var(--text-secondary);
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  width: 100%;
+  transition: var(--transition-fast);
+  letter-spacing: 0.2px;
 }
 
-.category-pill:hover {
-  background-color: var(--bg-surface-elevated);
-  border-color: rgba(255, 255, 255, 0.1);
-  color: var(--text-primary);
-  transform: translateY(-2px);
-}
-
+/* Hover States */
 .category-pill:hover .category-icon {
-  transform: scale(1.15) rotate(-5deg);
+  background-color: var(--bg-surface-elevated);
+  border-color: rgba(255, 255, 255, 0.12);
+  transform: translateY(-3px) scale(1.05);
+  box-shadow: var(--shadow-md);
+  color: var(--text-primary);
 }
 
-.category-pill.active {
-  background: linear-gradient(135deg, var(--accent-color) 0%, #FF6B5C 100%);
-  color: #FFFFFF;
-  border-color: transparent;
-  box-shadow: var(--shadow-glow);
-  transform: translateY(-2px);
+.category-pill:hover .category-name {
+  color: var(--text-primary);
 }
 
+/* Active / Selected States */
 .category-pill.active .category-icon {
-  transform: scale(1.2);
+  background: linear-gradient(135deg, var(--accent-color) 0%, #FF6B5C 100%);
+  border-color: transparent;
+  color: #FFFFFF;
+  box-shadow: 0 8px 20px rgba(255, 59, 48, 0.35);
+  transform: translateY(-3px) scale(1.08);
+}
+
+.category-pill.active .category-name {
+  color: #FFFFFF;
+  font-weight: 700;
 }
 
 /* Lista de Fornecedores em Grid Responsivo (2 colunas no mobile, mais no desktop) */
