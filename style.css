@@ -157,8 +157,8 @@ input, select, textarea, button {
 }
 
 .brand-logo-img {
-  width: 28px;
-  height: 28px;
+  width: auto;
+  height: 44px;
   object-fit: contain;
 }
 
@@ -288,8 +288,9 @@ input, select, textarea, button {
 
 .login-logo-img {
   display: block;
-  width: 90px;
-  height: 90px;
+  width: 240px;
+  height: auto;
+  max-height: 140px;
   object-fit: contain;
 }
 
