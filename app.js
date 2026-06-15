@@ -725,7 +725,8 @@ window.confirmDeleteSupplier = async function(id) {
   const supplier = state.suppliers.find(s => Number(s.id) === Number(id));
   if (!supplier) return;
   
-  if (confirm(`Deseja realmente remover o fornecedor "${supplier.nome}"?`)) {
+  const confirmed = await showCustomConfirm("Excluir Fornecedor", `Deseja realmente remover o fornecedor "${supplier.nome}"?`);
+  if (confirmed) {
     showToast('Removendo...');
     
     try {
@@ -847,7 +848,7 @@ window.editCategory = async function(id) {
   if (!cat) return;
   
   const catName = cat.nome !== undefined ? cat.nome : cat.nome_categoria;
-  const newName = prompt("Editar nome da categoria:", catName);
+  const newName = await showCustomPrompt("Editar Categoria", "Nome da Categoria", catName);
   
   if (newName === null) return; // Cancelado
   const trimmed = newName.trim();
@@ -888,7 +889,11 @@ window.deleteCategory = async function(id) {
   
   const catName = cat.nome !== undefined ? cat.nome : cat.nome_categoria;
   
-  if (confirm(`Deseja realmente excluir a categoria "${catName}"?\nOs fornecedores vinculados a ela não serão excluídos, mas poderão ficar sem categoria.`)) {
+  const confirmed = await showCustomConfirm(
+    "Excluir Categoria",
+    `Deseja realmente excluir a categoria "${catName}"?\nOs fornecedores vinculados a ela não serão excluídos, mas poderão ficar sem categoria.`
+  );
+  if (confirmed) {
     showToast('Excluindo...');
     
     try {
@@ -1004,4 +1009,70 @@ function getCategoryIcon(name) {
   if (n.includes('frete') || n.includes('caminhão') || n.includes('caminhonete') || n.includes('pickup')) return '🛻';
   if (n.includes('peça') || n.includes('variado') || n.includes('original')) return '⚙️';
   return '🔧';
+}
+
+// Exibir Confirmação Customizada (Modal)
+function showCustomConfirm(title, message) {
+  return new Promise((resolve) => {
+    const modal = document.getElementById('modal-confirm');
+    const titleEl = document.getElementById('confirm-title');
+    const msgEl = document.getElementById('confirm-message');
+    const btnCancel = document.getElementById('btn-confirm-cancel');
+    const btnOk = document.getElementById('btn-confirm-ok');
+    
+    titleEl.textContent = title;
+    msgEl.textContent = message;
+    
+    modal.classList.add('active');
+    
+    function cleanup(value) {
+      modal.classList.remove('active');
+      btnCancel.removeEventListener('click', onCancel);
+      btnOk.removeEventListener('click', onOk);
+      resolve(value);
+    }
+    
+    function onCancel() { cleanup(false); }
+    function onOk() { cleanup(true); }
+    
+    btnCancel.addEventListener('click', onCancel);
+    btnOk.addEventListener('click', onOk);
+  });
+}
+
+// Exibir Prompt Customizado (Modal)
+function showCustomPrompt(title, label, defaultValue = '') {
+  return new Promise((resolve) => {
+    const modal = document.getElementById('modal-prompt');
+    const titleEl = document.getElementById('prompt-title');
+    const labelEl = document.getElementById('prompt-label');
+    const inputEl = document.getElementById('prompt-input');
+    const btnCancel = document.getElementById('btn-prompt-cancel');
+    const form = document.getElementById('form-prompt');
+    
+    titleEl.textContent = title;
+    labelEl.textContent = label;
+    inputEl.value = defaultValue;
+    
+    modal.classList.add('active');
+    
+    // Pequeno timeout para dar foco ao input depois que a animação iniciar
+    setTimeout(() => inputEl.focus(), 150);
+    
+    function cleanup(value) {
+      modal.classList.remove('active');
+      btnCancel.removeEventListener('click', onCancel);
+      form.removeEventListener('submit', onSubmit);
+      resolve(value);
+    }
+    
+    function onCancel() { cleanup(null); }
+    function onSubmit(e) { 
+      e.preventDefault();
+      cleanup(inputEl.value.trim()); 
+    }
+    
+    btnCancel.addEventListener('click', onCancel);
+    form.addEventListener('submit', onSubmit);
+  });
 }

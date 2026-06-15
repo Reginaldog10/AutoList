@@ -309,6 +309,43 @@
     </div>
   </div>
 
+  <!-- MODAL: CONFIRMAÇÃO CUSTOMIZADA -->
+  <div class="modal-overlay" id="modal-confirm">
+    <div class="modal-container modal-alert">
+      <div class="modal-header">
+        <h3 id="confirm-title">Confirmar</h3>
+      </div>
+      <div class="modal-body">
+        <p id="confirm-message" class="confirm-text">Deseja prosseguir com esta ação?</p>
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-secondary" id="btn-confirm-cancel">Cancelar</button>
+        <button type="button" class="btn btn-primary" id="btn-confirm-ok">Confirmar</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- MODAL: PROMPT CUSTOMIZADO -->
+  <div class="modal-overlay" id="modal-prompt">
+    <div class="modal-container modal-alert">
+      <div class="modal-header">
+        <h3 id="prompt-title">Entrada de Dados</h3>
+      </div>
+      <form id="form-prompt">
+        <div class="modal-body">
+          <div class="form-group">
+            <label id="prompt-label" for="prompt-input">Valor</label>
+            <input type="text" id="prompt-input" required autocomplete="off">
+          </div>
+        </div>
+        <div class="modal-footer">
+          <button type="button" class="btn btn-secondary" id="btn-prompt-cancel">Cancelar</button>
+          <button type="submit" class="btn btn-primary" id="btn-prompt-ok">Confirmar</button>
+        </div>
+      </form>
+    </div>
+  </div>
+
   <!-- Toast Notification -->
   <div class="toast hidden" id="app-toast">
     <div class="toast-content">

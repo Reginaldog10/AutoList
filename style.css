@@ -1188,6 +1188,31 @@ input, select, textarea, button {
   color: #FFFFFF;
 }
 
+/* Modais de Alerta e Confirmação Customizados */
+.modal-overlay:has(.modal-alert) {
+  align-items: center; /* Centraliza verticalmente no mobile e desktop */
+}
+
+.modal-container.modal-alert {
+  max-width: 400px;
+  width: calc(100% - 32px); /* Margem lateral no mobile */
+  border-radius: var(--radius-lg);
+  border: 1px solid var(--border-color);
+  transform: scale(0.95) translateY(10px);
+  padding: 24px;
+  box-shadow: var(--shadow-lg);
+}
+
+.modal-overlay.active .modal-container.modal-alert {
+  transform: scale(1) translateY(0);
+}
+
+.confirm-text {
+  font-size: 14px;
+  color: var(--text-secondary);
+  line-height: 1.5;
+}
+
 /* Tablet & Desktop Responsiveness (Full-Screen Adaptation) */
 @media (min-width: 768px) {
   body {
