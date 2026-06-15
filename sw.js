@@ -1,4 +1,4 @@
-const CACHE_NAME = 'autolist-catalogo-v4';
+const CACHE_NAME = 'autolist-catalogo-v5';
 const ASSETS = [
   './',
   './index.html',
@@ -6,6 +6,7 @@ const ASSETS = [
   './app.js',
   './manifest.json',
   './logo.png',
+  './Banner.png',
   './icon.png',
   './icon-192.png',
   './icon-512.png'

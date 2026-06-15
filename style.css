@@ -1459,3 +1459,29 @@ input, select, textarea, button {
     bottom: calc(108px + var(--safe-area-bottom)); /* Fica um pouco acima do bottom-nav estilo pílula */
   }
 }
+
+/* Banner Premium no Catálogo */
+.app-banner-container {
+  width: 100%;
+  margin-bottom: 20px;
+  overflow: hidden;
+  border-radius: var(--radius-lg);
+  box-shadow: var(--shadow-sm);
+  border: 1px solid var(--border-color);
+  aspect-ratio: 16 / 6; /* Define uma proporção de aspecto moderna */
+  background-color: var(--bg-surface);
+}
+
+.app-banner-img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  display: block;
+}
+
+/* Ajustes de aspecto do banner no desktop */
+@media (min-width: 992px) {
+  .app-banner-container {
+    aspect-ratio: 16 / 4; /* Fica mais elegante e estreito em telas horizontais grandes */
+  }
+}
