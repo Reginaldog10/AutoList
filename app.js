@@ -81,13 +81,80 @@ document.addEventListener('DOMContentLoaded', () => {
   initCategoryCarouselNavigation();
 });
 
-// Registrar o Service Worker para PWA
+// Registrar o Service Worker para PWA e gerenciar atualizações
 if ('serviceWorker' in navigator) {
   window.addEventListener('load', () => {
     navigator.serviceWorker.register('sw.js')
-      .then(reg => console.log('Service Worker registrado com sucesso:', reg.scope))
+      .then(reg => {
+        console.log('Service Worker registrado com sucesso:', reg.scope);
+
+        // Se houver um service worker esperando, mostra o banner de atualização
+        if (reg.waiting) {
+          showUpdateBanner(reg.waiting);
+        }
+
+        // Monitora novas atualizações sendo instaladas
+        reg.addEventListener('updatefound', () => {
+          const newWorker = reg.installing;
+          if (newWorker) {
+            newWorker.addEventListener('statechange', () => {
+              if (newWorker.state === 'installed' && navigator.serviceWorker.controller) {
+                // Tem uma nova versão instalada e pronta para substituir o SW atual
+                showUpdateBanner(newWorker);
+              }
+            });
+          }
+        });
+
+        // Adiciona checagem de atualizações manual ao iniciar
+        reg.update().catch(err => console.warn('Erro ao forçar atualização inicial:', err));
+
+        // Força checagem de atualizações periódica quando o app ganha foco
+        document.addEventListener('visibilitychange', () => {
+          if (document.visibilityState === 'visible') {
+            reg.update().catch(err => console.warn('Erro ao forçar atualização ao focar:', err));
+          }
+        });
+      })
       .catch(err => console.error('Erro ao registrar Service Worker:', err));
+
+    // Recarrega a página quando o Service Worker atual mudar (após skipWaiting)
+    let refreshing = false;
+    navigator.serviceWorker.addEventListener('controllerchange', () => {
+      if (!refreshing) {
+        refreshing = true;
+        window.location.reload();
+      }
+    });
   });
+}
+
+// Exibir banner de atualização disponível
+function showUpdateBanner(worker) {
+  const updateBanner = document.getElementById('pwa-update-banner');
+  const btnUpdateInstall = document.getElementById('btn-update-install');
+  const btnUpdateClose = document.getElementById('btn-update-close');
+
+  if (!updateBanner) return;
+
+  // Se o banner de instalação estiver visível, ocultamos para dar prioridade à atualização
+  const installBanner = document.getElementById('pwa-install-banner');
+  if (installBanner) {
+    installBanner.classList.add('hidden');
+  }
+
+  // Exibir o banner
+  updateBanner.classList.remove('hidden');
+
+  btnUpdateInstall.onclick = () => {
+    if (window.navigator.vibrate) window.navigator.vibrate(30);
+    // Envia mensagem para o novo worker rodar skipWaiting
+    worker.postMessage({ type: 'SKIP_WAITING' });
+  };
+
+  btnUpdateClose.onclick = () => {
+    updateBanner.classList.add('hidden');
+  };
 }
 
 // Inicializar Ouvintes de Evento

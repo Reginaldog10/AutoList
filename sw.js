@@ -1,4 +1,4 @@
-const CACHE_NAME = 'autolist-catalogo-v9';
+const CACHE_NAME = 'autolist-catalogo-v10';
 const ASSETS = [
   './',
   './index.html',
@@ -20,7 +20,6 @@ self.addEventListener('install', event => {
         console.log('[Service Worker] Caching App Shell');
         return cache.addAll(ASSETS);
       })
-      .then(() => self.skipWaiting())
   );
 });
 
@@ -74,4 +73,11 @@ self.addEventListener('fetch', event => {
         }
       })
   );
+});
+
+// Ouvir mensagens enviadas pelos clientes (ex: SKIP_WAITING)
+self.addEventListener('message', event => {
+  if (event.data && event.data.type === 'SKIP_WAITING') {
+    self.skipWaiting();
+  }
 });
